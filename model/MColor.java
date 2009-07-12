@@ -27,7 +27,7 @@ public class MColor {
     }
     
     public int maxOut(double val) {
-        return (int) (val > 255 ? 255 : val);
+        return (int) (val < 0 ? 0 : (val > 254 ? 254: val));
     }
     
     public Color getColor() {

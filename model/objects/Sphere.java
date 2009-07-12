@@ -22,7 +22,7 @@ public class Sphere implements Shape{
     }
 
     public Color getColor() {
-        return Color.WHITE;
+        return Color.RED;
     }
 
     public void move(double x, double y, double z) {

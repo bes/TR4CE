@@ -3,3 +3,4 @@ THIS IS TR4CE
 http://books.google.se/books?id=LBm1khtUX0cC&pg=PA258&lpg=PA258&dq=point+of+line+sphere+intersection&source=bl&ots=kNP9s-G_eo&sig=jAKx3OWa2qDTdtpMc9OjJ6nvL-o&hl=sv&ei=3xdaSr-lIYOlsAbP3IHVAw&sa=X&oi=book_result&ct=result&resnum=10
 http://en.wikipedia.org/wiki/Phong_shading
 http://en.wikipedia.org/wiki/Dot_product
+http://www.junoplay.com/articles/raytracing-lighting-reflections-and-isosurfaces

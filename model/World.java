@@ -21,7 +21,7 @@ public class World {
     private BufferedImage bimg;
     private Graphics bG;
     
-    private Color roomColor = Color.RED;
+    private Color roomColor = Color.BLACK;
     
     private int width, height, depth;
     
@@ -70,21 +70,20 @@ public class World {
         bG.setColor(roomColor);
         bG.fillRect(0, 0, width, height);
         
-        float ka = 0.2f;
-        float kd = 0.6f;
-        float ks = 0.9f;
-        float aa = 4f;
+        double ka = 1f;
+        double kd = 1f;
+        double ks = 0.1f;
         
-        int loops = 9;
+        int loops = 1;
         int numLights = lights.size();
         for (int x = -raster.getWidth() / 2; x < raster.getWidth() / 2; x++) {
             for (int y = -raster.getHeight() / 2; y < raster.getHeight() / 2; y++) {
                 MColor mc = new MColor();
-//                double pX = x;
-//                double pY = y;
-                for (double pX = x - 0.2; pX <= x + 0.2; pX += 0.2) {
-                    for (double pY = y - 0.2; pY <= y + 0.2; pY += 0.2) {
-                        Ray r = new Ray(eye.getX() , eye.getY() , eye.getZ() ,pX - eye.getX(), pY - eye.getY(), 100 - eye.getZ());
+                double pX = x;
+                double pY = y;
+//                for (double pX = x - 0.5; pX <= x + 0.5; pX += 0.1) {
+//                    for (double pY = y - 0.5; pY <= y + 0.5; pY += 0.1) {
+                        Ray r = new Ray(eye.getX() , eye.getY() , eye.getZ() ,pX - eye.getX(), pY - eye.getY(), 2000 - eye.getZ());
 //                        boolean pixelSet = false;
                         for (Shape s: shapes) {
                             double [] point = s.intersects(r, this);
@@ -99,32 +98,44 @@ public class World {
                                     boolean blocked = false;
                                     double[] ls = l.getPos();
                                     Ray rs = new Ray(point[0], point[1], point[2], ls[0] - point[0], ls[1] - point[1], ls[2] - point[2]);
-                                    for (Shape ss: shapes) {
+ /*                                   for (Shape ss: shapes) {
                                         spoint = ss.intersects(rs, this);
                                         if (spoint != null) {
                                             blocked = true;
                                             break;
                                         }
                                     }
-                                    if (!blocked) {
+                                    if (!blocked) {*/
                                         double LN = (rs.getNorm()[0]*normal[0] + rs.getNorm()[1]*normal[1] + rs.getNorm()[2]*normal[2]);
-                                        red   +=  (kd * LN * l.getColor().getRed());
-                                        green +=  (kd * LN * l.getColor().getGreen());
-                                        blue  +=  (kd * LN * l.getColor().getBlue());
+                                        double inV[] = new double[]{ls[0] - point[0], ls[1] - point[1], ls[2] - point[2] };
+                                        double ndot_inV = normal[0] * inV[0] + normal[1] * inV[1] + normal[2] * inV[2];
+                                        double inVpar[] = { normal[0] * ndot_inV, normal[1] * ndot_inV, normal[2] * ndot_inV };
+                                        double R[] = { inV[0] - 2*inVpar[0], inV[1] - 2*inVpar[1], inV[2] - 2*inVpar[2] }; //Phong R
+                                        double Rabs = Math.sqrt(R[0]*R[0] + R[1]*R[1] + R[2]*R[2]);
+                                        R[0] = R[0] / Rabs;
+                                        R[1] = R[1] / Rabs;
+                                        R[2] = R[2] / Rabs;
+                                        double Vabs = Math.sqrt(point[0]*point[0] + point[1]*point[1] + point[2]*point[2]);
+                                        double V[] = { -point[0]/Vabs, -point[1]/Vabs, -point[2]/Vabs }; // Phong V
+                                        double RValphaPow = alphaPow(R[0]*V[0] + R[1]*V[1] + R[2]*V[2], 1);
+
+                                        red   +=  (kd * LN * l.getColor().getRed() + ks * RValphaPow *s.getColor().getRed()) / loops;
+                                        green +=  (kd * LN * l.getColor().getGreen() + ks * RValphaPow * s.getColor().getGreen()) / loops;
+                                        blue  +=  (kd * LN * l.getColor().getBlue() + ks * RValphaPow * s.getColor().getBlue()) / loops;
                                         
                                         
                                         //float red = s.getColor().getRed()/(loops) + l.getColor().getRed()/(loops+numLights);
                                         //float green = s.getColor().getGreen()/(loops) + l.getColor().getGreen()/(loops+numLights);
                                         //float blue = s.getColor().getBlue()/(loops) + l.getColor().getBlue()/(loops+numLights);
-                                    }
+                                    //}
                                 }
                                 mc.addColor(ka * red, ka * green, ka * blue);
                             }else{
-                                //mc.addColor(roomColor.getRed()/loops, roomColor.getGreen()/loops, roomColor.getBlue()/loops);
+                                mc.addColor(roomColor.getRed()/loops, roomColor.getGreen()/loops, roomColor.getBlue()/loops);
                             }
                         }
-                    }
-                }
+                //    }
+                //}
                 int xT = (int)worldX(x);
                 int yT = (int)worldY(y);
                 bG.setColor(mc.getColor());
@@ -132,6 +143,14 @@ public class World {
             }
         }
         g.drawImage(bimg, 0, 0, o);
+    }
+    
+    private double alphaPow(double val, int pow) {
+    	double temp = val;
+    	for (int i = 1; i < pow; i++){
+    		temp *= val;
+    	}
+    	return temp;
     }
     
     private double worldX(double x){
