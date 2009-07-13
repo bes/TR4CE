@@ -12,44 +12,39 @@ import model.Shape;
 import model.World;
 
 public class Sphere implements Shape{
-    double x,y,z,r;
+    double r;
+    Point3D pos;
+    Color c;
     
-    public Sphere(double x, double y, double z, double r) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public Sphere(double x, double y, double z, double r, Color c) {
+    	pos = new Point3D(x,y,z);
         this.r = r;
+        this.c = c;
     }
 
     public Color getColor() {
-        return Color.RED;
-    }
-
-    public void move(double x, double y, double z) {
-        // TODO: implement
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        return c;
     }
     
-    public double[] intersects(Ray ray, World w) {
-        double[] unit = ray.getNorm();
-        double[] p    = ray.getPos();
-        double alpha  = - ((p[0]-x)*unit[0] + (p[1]-y)*unit[1] + (p[2]-z)*unit[2]);
-        double[] q    = new double[] {p[0]+alpha * unit[0], p[1]+alpha*unit[1], p[2]+alpha*unit[2] };
-        double bSq    = ((q[0] - x)*(q[0] - x) + (q[1] - y) * (q[1] - y) + (q[2] - z) * (q[2] - z));
+    public Point3D intersects(Ray ray, World w) {
+        Point3D unit = ray.getVector().normalized();
+        Point3D p    = ray.getPoint();
+        
+        double alpha = -p.minus(pos).dot(unit);
+        Point3D q    = p.plus(unit.multiply(alpha));
+        double bSq   = q.minus(pos).abs_squared();
         
         if (bSq > r*r)
             return null;
         
         double a = Math.sqrt(r*r - bSq);
         if (alpha >= a) {
-            double[] q1 = new double[] { q[0] - a*unit[0] , q[1] - a*unit[1] , q[2] - a*unit[2] };
+        	Point3D q1 = q.minus(unit.multiply(a));
             return q1;
         }
         
         if (alpha + a > 0) {
-            double[] q2 = new double[] { q[0] + a*unit[0] , q[1] + a*unit[1] , q[2] + a*unit[2] };
+        	Point3D q2 = q.plus(unit.multiply(a));
             return q2;
         }
         
@@ -58,7 +53,7 @@ public class Sphere implements Shape{
 
     public boolean test(double x, double y, double z) {
         // Move the point to sphere coordinates
-        double sX = x - this.x;
+/*        double sX = x - this.x;
         double sY = y - this.y;
         double sZ = z - this.z;
 
@@ -67,13 +62,11 @@ public class Sphere implements Shape{
         // If a point is contained within the absolute distance |d| of the sphere
         if (Math.sqrt(sX*sX + sY*sY + sZ*sZ) < r ) {
             return true;
-        }
+        }*/
         return false;
     }
-
-    public double[] getNormal(double[] point) {
-        double [] vals = new double[] { point[0] - x , point[1] - y, point[2] -z };
-        double abs = Math.sqrt(vals[0] * vals[0] + vals[1] * vals[1] + vals[2] * vals[2]);
-        return new double[] { vals[0] / abs, vals[1] / abs, vals[2] / abs };
+    
+    public Point3D getNormal(Point3D point){
+    	return point.minus(pos).normalized();
     }
 }

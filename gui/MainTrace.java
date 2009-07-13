@@ -35,11 +35,11 @@ public class MainTrace extends JFrame implements Runnable, WindowListener{
 
         w = new World(width, height, depth);
         //w.addShape(new Sphere(0,0,16,10));
-        w.addShape(new Sphere(0,0,150,5));
-        w.addShape(new Sphere(10,0,150,3));
-        //w.addLight(new StandardLight(20,0,-10, Color.WHITE));
+        w.addShape(new Sphere(0,0,250,10, Color.RED));
+        w.addShape(new Sphere(0,0,150,3, Color.YELLOW));
+        //w.addLight(new StandardLight(-100,-100,-10, Color.WHITE));
         //w.addLight(new StandardLight(0,0,0, Color.red));
-        w.addLight(new StandardLight(-20,0,-100, Color.RED));
+        w.addLight(new StandardLight(100,200,-50, Color.WHITE));
         w.setRaster(new Raster(0,0,0, width, height));
         w.setEye(new Eye(0,0,0));
 
@@ -53,9 +53,6 @@ public class MainTrace extends JFrame implements Runnable, WindowListener{
 
     public void run() {
         w.render(this.getGraphics(), this);
-//        this.getGraphics().setColor(Color.BLUE);
-//        this.getGraphics().drawLine(0, height/2, width, height/2);
-//        this.getGraphics().drawLine(width/2, 0, width/2, height);
     }
 
     public void windowActivated(WindowEvent arg0) {

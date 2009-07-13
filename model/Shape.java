@@ -3,13 +3,14 @@
  */
 package model;
 
+import gui.Point3D;
+
 import java.awt.Color;
 
 public interface Shape {
     public boolean test(double x, double y, double z);
-    public void move(double x, double y, double z);
-    public double[] intersects(Ray r, World w);
+    public Point3D intersects(Ray r, World w);
     public Color getColor();
-    public double[] getNormal(double[] point);
+    public Point3D getNormal(Point3D point);
     
 }

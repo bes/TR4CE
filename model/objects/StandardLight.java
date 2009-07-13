@@ -3,24 +3,22 @@
  */
 package model.objects;
 
+import gui.Point3D;
+
 import java.awt.Color;
 
 import model.Light;
 
 public class StandardLight implements Light {
-    private double x,y,z;
-    private double[] pos;
+    private Point3D pos;
     private Color color;
     
     public StandardLight(double x, double y, double z, Color c) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        pos = new double[] { this.x, this.y, this.z };
+        pos = new Point3D(x, y, z);
         this.color = c;
     }
 
-    public double[] getPos() {
+    public Point3D getPos() {
         return pos;
     }
     

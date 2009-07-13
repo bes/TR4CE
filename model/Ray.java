@@ -3,21 +3,27 @@
  */
 package model;
 
+import gui.Point3D;
+
 public class Ray {
-    private double[] norm;
-    private double[] pos;
+    private Point3D point;
+    private Point3D vector;
     
     public Ray(double x, double y, double z, double xV, double yV, double zV) {
-        double abs = Math.sqrt(xV*xV + yV*yV + zV*zV);
-        norm = new double[] { xV / abs, yV / abs, zV / abs };
-        pos = new double[] { x,y,z };
+        this.point = new Point3D(xV,yV,zV);
+        this.vector = new Point3D(x,y,z);
     }
     
-    public double[] getNorm() {
-        return norm;
+    public Ray(Point3D point, Point3D vector) {
+    	this.point = point;
+    	this.vector = vector;
     }
     
-    public double[] getPos() {
-        return pos;
+    public Point3D getVector() {
+    	return vector;
+    }
+    
+    public Point3D getPoint() {
+    	return point;
     }
 }

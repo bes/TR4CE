@@ -3,9 +3,11 @@
  */
 package model;
 
+import gui.Point3D;
+
 import java.awt.Color;
 
 public interface Light {
-    public double[] getPos();
+    public Point3D getPos();
     public Color getColor();
 }
