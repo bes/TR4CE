@@ -67,49 +67,48 @@ public class World {
         bG.setColor(roomColor);
         bG.fillRect(0, 0, width, height);
         
-        double ka = 0.2f;
+        double ka = 0.5f;
         double kd = 0.5f;
-        double ks = 0.3f;
+        double ks = 0.4f;
+        int alpha = 4;
+        
+        Point3D eyePos = eye.getPos();
         
         for (int x = -raster.getWidth() / 2; x < raster.getWidth() / 2; x++) {
             for (int y = -raster.getHeight() / 2; y < raster.getHeight() / 2; y++) {
                 MColor mc = new MColor();
-                Point3D rasterPos = new Point3D(x,y,2000);
-                Ray r = new Ray(eye.getPos(), rasterPos.minus(eye.getPos()));
-                double zd = Double.MAX_VALUE;
-                for (Shape s: shapes) {
-                    Point3D point = s.intersects(r, this);
-                    
-                    if (point != null){
-                        double tzd = point.minus(eye.getPos()).abs();
-                    	if (zd > tzd) {
-                    		zd = tzd;
-	                        double red, green, blue;
-	                        red = green = blue = 0;
-	                        for (Light l: lights) {
-	                            Point3D ls = l.getPos();
-	                            Ray rs = new Ray(point, ls.minus(point));
-	                            
-	                        	Point3D L = rs.getVector().normalized();
-	                        	Point3D N = s.getNormal(point);
-	                            double LN = L.dot(N);
-	                            
-	                            Point3D R = r.getVector().minus(N.multiply( r.getVector().dot(N) * 2 )).normalized();
-	                            Point3D V = eye.getPos().minus(point).normalized();
-	                            
-	                            double RValphaPow = Math.max(0,R.dot(V));
-	
-	                            red   +=  (kd * LN * s.getColor().getRed() + ks * RValphaPow * l.getColor().getRed());
-	                            green +=  (kd * LN * s.getColor().getGreen() + ks * RValphaPow * l.getColor().getGreen());
-	                            blue  +=  (kd * LN * s.getColor().getBlue() + ks * RValphaPow * l.getColor().getBlue());
-	                        }
-	                        mc.addColor( 
-	                        		ka * s.getColor().getRed() + red, 
-	                        		ka * s.getColor().getGreen() + green, 
-	                        		ka * s.getColor().getBlue() + blue);
-                    	}
+                Point3D rasterPos = new Point3D(x,y,raster.getWidth());
+                Ray r = new Ray(eyePos, rasterPos.minus(eye.getPos()));
+
+                Object[] hit = closestIntersection(r);
+                
+                Shape s = (Shape) hit[0];
+                Point3D point = (Point3D) hit[1];
+                if (s != null){
+                    double red, green, blue;
+                    red = green = blue = 0;
+                    for (Light l: lights) {
+                        Point3D ls = l.getPos();
+                        Ray rs = new Ray(point, ls.minus(point));
+                        
+                    	Point3D L = rs.getVector().normalized();
+                    	Point3D N = s.getNormal(point);
+                        double LN = L.dot(N);
+                        
+                        Point3D R = r.getVector().minus(N.multiply( r.getVector().dot(N) * 2 )).normalized();
+                        Point3D V = eye.getPos().minus(point).normalized();
+                        
+                        double RValphaPow = alphaPow(Math.max(0,R.dot(V)), alpha);
+
+                        red   +=  (kd * LN * s.getColor().getRed() + ks * RValphaPow * l.getColor().getRed());
+                        green +=  (kd * LN * s.getColor().getGreen() + ks * RValphaPow * l.getColor().getGreen());
+                        blue  +=  (kd * LN * s.getColor().getBlue() + ks * RValphaPow * l.getColor().getBlue());
                     }
-                }
+                    mc.addColor( 
+                    		ka * s.getColor().getRed() + red, 
+                    		ka * s.getColor().getGreen() + green, 
+                    		ka * s.getColor().getBlue() + blue);
+            	}
 
                 int xT = (int)worldX(x);
                 int yT = (int)worldY(y);
@@ -118,6 +117,24 @@ public class World {
             }
         }
         g.drawImage(bimg, 0, 0, o);
+    }
+    
+    private Object[] closestIntersection(Ray r){
+    	Shape hit = null;
+    	Point3D hitPoint = null;
+        for (Shape s: shapes) {
+            Point3D point = s.intersects(r, this);
+            double zd = Double.MAX_VALUE;
+            if (point != null){
+                double tzd = point.minus(eye.getPos()).abs();
+            	if (zd > tzd) {
+            		zd = tzd;
+            		hit = s;
+            		hitPoint = point;
+            	}
+            }
+        }
+    	return new Object[]{hit, hitPoint};
     }
     
     private double alphaPow(double val, int pow) {

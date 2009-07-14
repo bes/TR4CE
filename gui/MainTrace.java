@@ -35,8 +35,8 @@ public class MainTrace extends JFrame implements Runnable, WindowListener{
 
         w = new World(width, height, depth);
         //w.addShape(new Sphere(0,0,16,10));
-        w.addShape(new Sphere(0,0,250,10, Color.RED));
-        w.addShape(new Sphere(0,0,150,3, Color.YELLOW));
+        w.addShape(new Sphere(-30,-30,110,10, Color.RED));
+        w.addShape(new Sphere(30,30,80,3, Color.YELLOW));
         //w.addLight(new StandardLight(-100,-100,-10, Color.WHITE));
         //w.addLight(new StandardLight(0,0,0, Color.red));
         w.addLight(new StandardLight(100,200,-50, Color.WHITE));

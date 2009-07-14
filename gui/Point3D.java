@@ -7,7 +7,7 @@ public class Point3D {
     public static final Point3D zero = new Point3D(0,0,0);
     
     protected double [] point;
-    
+        
     public Point3D(double point[]) {
         this.point = point.clone();
     }
@@ -17,7 +17,7 @@ public class Point3D {
     }
     
     public Point3D(Point3D p) {
-    	point = p.point.clone();
+    	point = p.point;
     }
     
     public double dot(Point3D b){
@@ -49,7 +49,12 @@ public class Point3D {
     	return new Point3D(point[0]/abs,point[1]/abs,point[2]/abs);
     }
     
-    public double[] point(){
-    	return point.clone();
+    public double getX(){
+    	return point[0];
     }
-}
+    
+    public double getY(){
+    	return point[1];
+    }
+    
+ }
