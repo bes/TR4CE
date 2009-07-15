@@ -12,5 +12,12 @@ public interface Shape {
     public Point3D intersects(Ray r, World w);
     public Color getColor();
     public Point3D getNormal(Point3D point);
+    public double ambient();
+    public double diffuse();
+    public double specular();
+    public double refraction();
+    public double reflection();
     
+    public String getName();
+    public void setName(String s);
 }

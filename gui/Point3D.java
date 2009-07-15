@@ -49,12 +49,23 @@ public class Point3D {
     	return new Point3D(point[0]/abs,point[1]/abs,point[2]/abs);
     }
     
+    public Point3D cross(Point3D c){
+    	return new Point3D(
+    			point[1]*c.point[2] - point[2]*c.point[1],
+    			point[2]*c.point[0] - point[0]*c.point[2],
+    			point[0]*c.point[1] - point[1]*c.point[0]);
+    }
+    
     public double getX(){
     	return point[0];
     }
     
     public double getY(){
     	return point[1];
+    }
+    
+    public double getZ(){
+    	return point[2];
     }
     
  }

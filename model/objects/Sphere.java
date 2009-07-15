@@ -16,10 +16,20 @@ public class Sphere implements Shape{
     Point3D pos;
     Color c;
     
-    public Sphere(double x, double y, double z, double r, Color c) {
-    	pos = new Point3D(x,y,z);
+    String name = null;
+    
+    double a,d,s,refract,reflect;
+    
+    public Sphere(Point3D p, double a, double d, double s, double r, double refract, double reflect, Color c) {
+    	pos = p;
         this.r = r;
         this.c = c;
+        this.a = a;
+        this.d = d;
+        this.s = s;
+        
+        this.refract = refract;
+        this.reflect = reflect;
     }
 
     public Color getColor() {
@@ -69,4 +79,46 @@ public class Sphere implements Shape{
     public Point3D getNormal(Point3D point){
     	return point.minus(pos).normalized();
     }
+
+	@Override
+	public double ambient() {
+		// TODO Auto-generated method stub
+		return a;
+	}
+
+	@Override
+	public double diffuse() {
+		// TODO Auto-generated method stub
+		return d;
+	}
+
+	@Override
+	public double specular() {
+		// TODO Auto-generated method stub
+		return s;
+	}
+
+	@Override
+	public double refraction() {
+		// TODO Auto-generated method stub
+		return refract;
+	}
+
+	@Override
+	public double reflection() {
+		// TODO Auto-generated method stub
+		return reflect;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return name;
+	}
+
+	@Override
+	public void setName(String s) {
+		// TODO Auto-generated method stub
+		name = s;
+	}
 }
