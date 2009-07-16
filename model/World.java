@@ -64,22 +64,23 @@ public class World {
     }
     
     public void render(Graphics g, ImageObserver o) {
-        
-        Point3D eyePos = eye.getPos();
-        
-        for (int x = -raster.getWidth() / 2; x < raster.getWidth() / 2; x++) {
-        	System.out.println("x: " + x);
-            for (int y = -raster.getHeight() / 2; y < raster.getHeight() / 2; y++) {
-                Point3D rasterPos = new Point3D(x,y,1000);
-                //Point3D rasterPos = raster.getPoint(x, y);
-                Ray r = new Ray(eyePos, rasterPos.minus(eye.getPos()).normalized());
+        for (int x = 0; x < raster.getWidth(); x++) {
+            for (int y = 0; y < raster.getHeight(); y++) {
+                Point3D rasterPos = raster.getPoint(x, y);
+                Ray r = new Ray(rasterPos, rasterPos.minus(eye.getPos()).normalized());
+                
+                //g.setColor(Color.RED);
+                //g.fillRect((int)worldX(rasterPos.getX()), (int)worldY(rasterPos.getY()), 3, 3);
+                
 
                 Color c = trace(r, 10, 1, null, g);
                 if (c != null) {
-	                int xT = (int)worldX(x);
-	                int yT = (int)worldY(y);
+	                int xT = (x);
+	                int yT = (y);
 	                bG.setColor(c);
 	                bG.fillRect(xT, yT, 1, 1);
+	                g.setColor(c);
+	                g.fillRect(xT, yT, 1, 1);
                 }
             }
         }
@@ -123,9 +124,9 @@ public class World {
 	                
 	                double RValphaPow = alphaPow(Math.max(0,R.dot(V)), 8);
 	
-	                red   +=  (s.diffuse() * LN * s.getColor().getRed() + s.specular() * RValphaPow * l.getColor().getRed());
-	                green +=  (s.diffuse() * LN * s.getColor().getGreen() + s.specular() * RValphaPow * l.getColor().getGreen());
-	                blue  +=  (s.diffuse() * LN * s.getColor().getBlue() + s.specular() * RValphaPow * l.getColor().getBlue());
+	                red   +=  (s.diffuse() * LN * l.getColor().getRed() + s.diffuse() * LN * s.getColor().getRed() + s.specular() * RValphaPow * l.getColor().getRed());
+	                green +=  (s.diffuse() * LN * l.getColor().getGreen() + s.diffuse() * LN * s.getColor().getGreen() + s.specular() * RValphaPow * l.getColor().getGreen());
+	                blue  +=  (s.diffuse() * LN * l.getColor().getBlue() + s.diffuse() * LN * s.getColor().getBlue() + s.specular() * RValphaPow * l.getColor().getBlue());
                 }
             }
             //Reflective
@@ -212,11 +213,13 @@ public class World {
         for (Shape s: shapes) {
             Point3D point = s.intersects(r, this);
             if (point != null){
-                double tzd = point.minus(eye.getPos()).abs();
+                double tzd = point.minus(r.getPoint()).abs();
             	if (zd > tzd) {
             		zd = tzd;
             		hit = s;
-            		hitPoint = point.plus(s.getNormal(point).multiply(0.00005));
+            		hitPoint = point.plus(
+            				s.getNormal(point)
+            				.multiply(0.00005));
             	}
             }
         }

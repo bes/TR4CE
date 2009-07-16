@@ -68,4 +68,15 @@ public class Point3D {
     	return point[2];
     }
     
+    public String toString(){
+    	return "{ " + getX() + ", " + getY() + ", " + getZ() + " }";
+    }
+    
+    public Point3D rotateY90CCW(){
+    	return new Point3D(point[2],point[1],-point[0]);
+    }
+    
+    public Point3D rotateX90CCW(){
+    	return new Point3D(point[0],-point[2],point[1]);
+    }
  }

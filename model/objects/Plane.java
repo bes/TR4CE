@@ -9,54 +9,55 @@ import model.Shape;
 import model.World;
 
 public class Plane implements Shape {
-	Point3D consts, normal;
+	Point3D consts;
 	double d;
+	Color c;
 	
-	public Plane(Point3D pos, Point3D normal, double d){
+	public Plane(Point3D pos, double d, Color c){
 		this.consts = pos;
-		this.normal = normal;
 		this.d = d;
+		this.c = c;
 		
-		Point3D p0 = new Point3D(0,-10,0);
-		Point3D p1 = new Point3D(1,-10,1);
-		Point3D p2 = new Point3D(3,-10,2);
+		/*
+		Point3D p0 = new Point3D(0,-10,4);
+		Point3D p1 = new Point3D(10,-10,1);
+		Point3D p2 = new Point3D(4,-10,2);
 		this.normal = p1.minus(p0).cross(p2.minus(p0));
 		this.d = p0.dot(normal);
 		System.out.println(this.d);
 		System.out.println(this.normal.getX() + " - " + this.normal.getY() + " - " + this.normal.getZ());
 		this.consts = this.normal;
+		*/
+		
 	}
 
 	@Override
 	public Color getColor() {
 		// TODO Auto-generated method stub
-		return Color.CYAN;
+		return c;
 	}
 
 	@Override
 	public Point3D getNormal(Point3D point) {
-		return normal;
+		return consts;
 	}
 
 	@Override
 	public Point3D intersects(Ray r, World w) {
-		Point3D beginP = r.getPoint();
-		Point3D maxP = beginP.plus(r.getVector().multiply(w.getDepth()));
+		Point3D lA = r.getPoint();
+		Point3D lB = lA.plus(r.getVector().normalized().multiply(w.getDepth()));
 		
-		double ta = d - Point3D.zero.minus(consts).dot(beginP);
-		double tb = maxP.minus(beginP).dot(consts);
+		double ta = d - lA.dot(consts.normalized());
+		double tb = lB.minus(lA).dot(consts.normalized());
 		
 		Point3D i = null;
-		if(ta != 0 && tb != 0){
+		if (ta != 0 && tb != 0){
 			double t = ta/tb;
-			i =  beginP.plus(maxP.minus(beginP).multiply(t));
+			i = lA.plus(lB.minus(lA).multiply(t));
+			//System.out.println(t + "      " + i);
 		}
 		
-		if (i != null && i.getZ() > 0 && i.getZ() < 150 && i.getX() > 0){
-			return i;
-		}
-		
-		return null;
+		return i;
 	}
 
 	@Override
@@ -68,19 +69,19 @@ public class Plane implements Shape {
 	@Override
 	public double ambient() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 0.2;
 	}
 
 	@Override
 	public double diffuse() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 0.21;
 	}
 
 	@Override
 	public double specular() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 0.1;
 	}
 
 	@Override
