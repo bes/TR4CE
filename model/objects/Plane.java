@@ -44,6 +44,8 @@ public class Plane implements Shape {
 
 	@Override
 	public Point3D intersects(Ray r, World w) {
+	  
+	  /*
 		Point3D lA = r.getPoint();
 		Point3D lB = lA.plus(r.getVector().normalized().multiply(w.getDepth()));
 		
@@ -57,7 +59,16 @@ public class Plane implements Shape {
 				i = lA.plus(lB.minus(lA).multiply(t));
 			}
 			//System.out.println(t + "      " + i);
-		}
+		}*/
+	  
+	  Point3D i = null;
+	  double dp = consts.dot(r.getVector());
+	  if ( dp != 0 ) {
+	    double t  = -(consts.dot(r.getPoint()) + d) / dp;
+	    if (t > 0) {
+	      i = r.getPoint().plus(r.getVector().multiply(t));
+	    }
+	  }
 		
 		return i;
 	}
@@ -71,19 +82,19 @@ public class Plane implements Shape {
 	@Override
 	public double ambient() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 0.1;
 	}
 
 	@Override
 	public double diffuse() {
 		// TODO Auto-generated method stub
-		return 0.21;
+		return 0.81;
 	}
 
 	@Override
 	public double specular() {
 		// TODO Auto-generated method stub
-		return 0.1;
+		return 0;
 	}
 
 	@Override
@@ -95,7 +106,7 @@ public class Plane implements Shape {
 	@Override
 	public double reflection() {
 		// TODO Auto-generated method stub
-		return 0.9;
+		return 0;
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class MainTrace extends JFrame implements Runnable, WindowListener{
         //w.addShape(new Sphere(0,0,16,10));
         //w.addShape(new Sphere(-10,-10,30,10, Color.RED));
         //w.addShape(new Plane(new Point3D(1,0,1), new Point3D(0,1,0), 1));
-        Sphere sp = new Sphere(new Point3D(0,0,0),
+        Sphere sp = new Sphere(new Point3D(0,0,60),
         		0,0.1,0.1,
         		40, 
         		1.2,
@@ -47,38 +47,33 @@ public class MainTrace extends JFrame implements Runnable, WindowListener{
         sp.setName("trans");
         w.addShape(sp);
 
-        w.addShape(new Sphere(new Point3D(20,0,-40),
-        		0.1,0.8,0.4,
-        		20, 
-        		0,
-        		2,
-        		Color.GRAY));
-
         w.addShape(new Sphere(new Point3D(-60,50,40),
         		0.2,0.4,0.2,
         		30, 
         		0,
-        		2,
+        		0,
         		Color.GREEN));
-        w.addShape(new Sphere(new Point3D(-20,-20,-25),
+        
+        w.addShape(new Sphere(new Point3D(-40,-40,20),
         		0.1,0.8,0.2,
         		40, 
         		0,
-        		2,
+        		0,
         		Color.RED));
 
-        w.addShape(new Plane(new Point3D(0.5,1,-0.5), -80, Color.RED));
-        w.addShape(new Plane(new Point3D(-0.4,1,-0.5), -180, Color.BLUE));
+        w.addShape(new Plane(new Point3D(0,1,0), 140, Color.GRAY));
+        w.addShape(new Plane(new Point3D(0,0,-1), 250, Color.GRAY));
+        //w.addShape(new Plane(new Point3D(-0.4,1,-0.5), -180, Color.BLUE));
         //w.addShape(new Plane(new Point3D(-1,0,0), -100, Color.YELLOW));
 System.out.println(new Point3D(0,1,0).rotateX90CCW());
         
         //w.addLight(new StandardLight(-100,-100,-10, Color.WHITE));
-        //w.addLight(new StandardLight(0,0,0, Color.red));
-        w.addLight(new StandardLight(0,90,-40, Color.WHITE));
-        w.addLight(new StandardLight(-60,20,0, Color.WHITE));
-        w.addLight(new StandardLight(0,0,0, Color.WHITE));
+        w.addLight(new StandardLight(0,0,-100, Color.WHITE, 0.5));
+        w.addLight(new StandardLight(0,90,-40, Color.WHITE, 0.4));
+        w.addLight(new StandardLight(-60,20,0, Color.WHITE, 0.4));
+        //w.addLight(new StandardLight(0,0,0, Color.WHITE));
         
-        Eye e = new Eye(new Point3D(0,0,-1000), new Point3D(0,0,1));
+        Eye e = new Eye(new Point3D(0,0,-934), new Point3D(0,0,1));
         w.setEye(e);
         w.setRaster(new Raster(width, height, e, 30));
 

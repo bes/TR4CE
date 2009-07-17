@@ -67,7 +67,7 @@ public class World {
         for (int x = 0; x < raster.getWidth(); x++) {
             for (int y = 0; y < raster.getHeight(); y++) {
                 Point3D rasterPos = raster.getPoint(x, y);
-                Ray r = new Ray(rasterPos, rasterPos.minus(eye.getPos()).normalized());
+                Ray r = new Ray(eye.getPos(), rasterPos.minus(eye.getPos()).normalized());
                 
                 //g.setColor(Color.RED);
                 //g.fillRect((int)worldX(rasterPos.getX()), (int)worldY(rasterPos.getY()), 3, 3);
@@ -124,9 +124,9 @@ public class World {
 	                
 	                double RValphaPow = alphaPow(Math.max(0,R.dot(V)), 8);
 	
-	                red   +=  (s.diffuse() * LN * l.getColor().getRed() + s.diffuse() * LN * s.getColor().getRed() + s.specular() * RValphaPow * l.getColor().getRed());
-	                green +=  (s.diffuse() * LN * l.getColor().getGreen() + s.diffuse() * LN * s.getColor().getGreen() + s.specular() * RValphaPow * l.getColor().getGreen());
-	                blue  +=  (s.diffuse() * LN * l.getColor().getBlue() + s.diffuse() * LN * s.getColor().getBlue() + s.specular() * RValphaPow * l.getColor().getBlue());
+	                red   +=  (s.diffuse() * LN * l.getColor().getRed() * l.getIntensity() + s.diffuse() * LN * s.getColor().getRed() + s.specular() * RValphaPow * l.getColor().getRed() * l.getIntensity());
+	                green +=  (s.diffuse() * LN * l.getColor().getGreen() * l.getIntensity() + s.diffuse() * LN * s.getColor().getGreen() + s.specular() * RValphaPow * l.getColor().getGreen() * l.getIntensity());
+	                blue  +=  (s.diffuse() * LN * l.getColor().getBlue() * l.getIntensity() + s.diffuse() * LN * s.getColor().getBlue() + s.specular() * RValphaPow * l.getColor().getBlue() * l.getIntensity());
                 }
             }
             //Reflective

@@ -12,10 +12,12 @@ import model.Light;
 public class StandardLight implements Light {
     private Point3D pos;
     private Color color;
+    private double intensity;
     
-    public StandardLight(double x, double y, double z, Color c) {
+    public StandardLight(double x, double y, double z, Color c, double i) {
         pos = new Point3D(x, y, z);
         this.color = c;
+        this.intensity = i;
     }
 
     public Point3D getPos() {
@@ -24,5 +26,9 @@ public class StandardLight implements Light {
     
     public Color getColor() {
         return color;
+    }
+    
+    public double getIntensity(){
+      return intensity;
     }
 }

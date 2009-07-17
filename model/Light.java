@@ -10,4 +10,5 @@ import java.awt.Color;
 public interface Light {
     public Point3D getPos();
     public Color getColor();
+    public double getIntensity();
 }
