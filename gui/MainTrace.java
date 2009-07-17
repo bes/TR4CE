@@ -67,10 +67,10 @@ public class MainTrace extends JFrame implements Runnable, WindowListener{
         		2,
         		Color.RED));
 
-        //w.addShape(new Plane(new Point3D(0,1,0), -10, Color.RED));
-        //w.addShape(new Plane(new Point3D(0,0,1), 10, Color.BLUE));
+        w.addShape(new Plane(new Point3D(0.5,1,-0.5), -80, Color.RED));
+        w.addShape(new Plane(new Point3D(-0.4,1,-0.5), -180, Color.BLUE));
         //w.addShape(new Plane(new Point3D(-1,0,0), -100, Color.YELLOW));
-
+System.out.println(new Point3D(0,1,0).rotateX90CCW());
         
         //w.addLight(new StandardLight(-100,-100,-10, Color.WHITE));
         //w.addLight(new StandardLight(0,0,0, Color.red));

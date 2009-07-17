@@ -51,9 +51,11 @@ public class Plane implements Shape {
 		double tb = lB.minus(lA).dot(consts.normalized());
 		
 		Point3D i = null;
-		if (ta != 0 && tb != 0){
+		if (tb != 0){
 			double t = ta/tb;
-			i = lA.plus(lB.minus(lA).multiply(t));
+			if (t >= 0 && t <= 1){
+				i = lA.plus(lB.minus(lA).multiply(t));
+			}
 			//System.out.println(t + "      " + i);
 		}
 		
@@ -69,7 +71,7 @@ public class Plane implements Shape {
 	@Override
 	public double ambient() {
 		// TODO Auto-generated method stub
-		return 0.2;
+		return 0;
 	}
 
 	@Override
@@ -93,7 +95,7 @@ public class Plane implements Shape {
 	@Override
 	public double reflection() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 0.9;
 	}
 
 	@Override
