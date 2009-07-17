@@ -64,24 +64,38 @@ public class World {
     }
     
     public BufferedImage render(Graphics g, ImageObserver o) {
+    	double xstep = 1/width;
+    	double ystep = 1/height;
         for (int x = 0; x < raster.getWidth(); x++) {
             for (int y = 0; y < raster.getHeight(); y++) {
                 Point3D rasterPos = raster.getPoint(x, y);
-                Ray r = new Ray(eye.getPos(), rasterPos.minus(eye.getPos()).normalized());
                 
                 //g.setColor(Color.RED);
                 //g.fillRect((int)worldX(rasterPos.getX()), (int)worldY(rasterPos.getY()), 3, 3);
-                
 
-                Color c = trace(r, 10, 1, null, g);
-                if (c != null) {
+
+                MColor mc = new MColor();
+                boolean colorSet = false;
+                for(double i = -0.3; i < 0.4; i+=0.6){
+                	for(double j = -0.3; j < 0.4; j+=0.6){
+                        Ray r = new Ray(eye.getPos().plus(raster.getXV().multiply(i).plus(raster.getYV().multiply(j))), rasterPos.minus(eye.getPos()).normalized());
+                        
+                        Color tc = trace(r, 10, 1, null, g);
+                        if (tc != null){
+                        	colorSet = true;
+                        	mc.addColor(tc.getRed()/4, tc.getGreen()/4, tc.getBlue()/4);
+                        }
+                	}
+                }
+                if (colorSet) {
 	                int xT = (width-x);
 	                int yT = (height-y);
-	                bG.setColor(c);
+	                bG.setColor(mc.getColor());
 	                bG.fillRect(xT, yT, 1, 1);
-	                g.setColor(c);
+	                g.setColor(mc.getColor());
 	                g.fillRect(xT, yT, 1, 1);
                 }
+
             }
         }
         g.drawImage(bimg, 0, 0, o);

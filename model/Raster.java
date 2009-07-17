@@ -38,6 +38,14 @@ public class Raster {
         return height;
     }
     
+    public Point3D getXV(){
+    	return xV;
+    }
+    
+    public Point3D getYV(){
+    	return yV;
+    }
+    
     public Point3D getPoint(int x, int y){
     	double xlen = (-width/2) + x;
     	double ylen = (-height/2) + y;

@@ -36,6 +36,10 @@ public class Point3D {
     	return new Point3D(point[0]*m, point[1]*m, point[2]*m);
     }
     
+    public Point3D mul3(Point3D b){
+    	return new Point3D(point[0]*b.point[0],point[1]*b.point[1],point[2]*b.point[2]);
+    }
+    
     public double abs(){
         return Math.sqrt(point[0] * point[0] + point[1] * point[1] + point[2] * point[2]); 
     }
