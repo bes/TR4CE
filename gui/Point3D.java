@@ -56,6 +56,10 @@ public class Point3D {
     			point[0]*c.point[1] - point[1]*c.point[0]);
     }
     
+    public double distance(Point3D b){
+    	return this.minus(b).abs();
+    }
+    
     public double getX(){
     	return point[0];
     }

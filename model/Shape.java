@@ -8,7 +8,6 @@ import gui.Point3D;
 import java.awt.Color;
 
 public interface Shape {
-    public boolean test(double x, double y, double z);
     public Point3D intersects(Ray r, World w);
     public Color getColor();
     public Point3D getNormal(Point3D point);
@@ -18,6 +17,9 @@ public interface Shape {
     public double refraction();
     public double reflection();
     
-    public String getName();
+    public boolean hasInvertNormal(Ray r, Point3D point);
+    public Point3D getInvertedNormal(Point3D point);
+    
+    public String toString();
     public void setName(String s);
 }

@@ -61,21 +61,6 @@ public class Sphere implements Shape{
         return null;
     }
 
-    public boolean test(double x, double y, double z) {
-        // Move the point to sphere coordinates
-/*        double sX = x - this.x;
-        double sY = y - this.y;
-        double sZ = z - this.z;
-
-        //System.out.println("" + sX + "," + sY + "," + sZ + ": " + Math.sqrt(sX*sX + sY*sY + sZ*sZ) + " r:" + r);
-
-        // If a point is contained within the absolute distance |d| of the sphere
-        if (Math.sqrt(sX*sX + sY*sY + sZ*sZ) < r ) {
-            return true;
-        }*/
-        return false;
-    }
-    
     public Point3D getNormal(Point3D point){
     	return point.minus(pos).normalized();
     }
@@ -111,7 +96,7 @@ public class Sphere implements Shape{
 	}
 
 	@Override
-	public String getName() {
+	public String toString() {
 		// TODO Auto-generated method stub
 		return name;
 	}
@@ -120,5 +105,20 @@ public class Sphere implements Shape{
 	public void setName(String s) {
 		// TODO Auto-generated method stub
 		name = s;
+	}
+
+	@Override
+	public boolean hasInvertNormal(Ray ray, Point3D point) {
+		Point3D halfWay = ray.getPoint().plus(ray.getVector().multiply(ray.getPoint().distance(point)/2));
+		if (halfWay.distance(pos) < r) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public Point3D getInvertedNormal(Point3D point) {
+		// TODO Auto-generated method stub
+		return pos.minus(point).normalized();
 	}
 }
